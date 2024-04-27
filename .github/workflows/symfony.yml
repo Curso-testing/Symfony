@@ -2,9 +2,9 @@ name: Run Symfony Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
         image: postgres:15-alpine
         env:
           POSTGRES_DB: app
-          POSTGRES_PASSWORD: !ChangeMe!
+          POSTGRES_PASSWORD: "!ChangeMe!"
           POSTGRES_USER: app
         ports:
           - 5432:5432
@@ -26,26 +26,26 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.1'
-        extensions: pdo_pgsql
-        tools: composer, symfony
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+          extensions: pdo_pgsql
+          tools: composer, symfony
 
-    - name: Install Composer dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Copy .env file
-      run: cp .env.test .env
+      - name: Copy .env file
+        run: cp .env.test .env
 
-    - name: Start Docker containers
-      run: docker-compose up -d
+      - name: Start Docker containers
+        run: docker-compose up -d
 
-    - name: Run tests
-      run: symfony php bin/phpunit
+      - name: Run tests
+        run: symfony php bin/phpunit
 
-    - name: Stop Docker containers
-      run: docker-compose down
+      - name: Stop Docker containers
+        run: docker-compose down
