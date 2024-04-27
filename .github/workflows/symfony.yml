@@ -53,8 +53,8 @@ jobs:
 
       - name: Set up Database
         run: |
-          symfony console doctrine:database:create
-          symfony console doctrine:migrations:migrate --no-interaction
+          ./bin/console doctrine:database:create
+          ./bin/console doctrine:migrations:migrate --no-interaction
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
-        run: symfony php bin/phpunit --testdox
+        run: ./bin/console php bin/phpunit --testdox
